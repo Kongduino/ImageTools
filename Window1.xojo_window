@@ -69,6 +69,7 @@ Begin DesktopWindow Window1
          LockLeft        =   True
          LockRight       =   True
          LockTop         =   True
+         OrigPicture     =   0
          Scope           =   0
          TabIndex        =   0
          TabPanelIndex   =   0
@@ -204,11 +205,14 @@ End
 		Function EditPaste() As Boolean Handles EditPaste.Action
 		  Dim c As New Clipboard
 		  If c.PictureAvailable Then
-		    Canvas1.OrigPicture = c.Picture ' get the picture
-		    Canvas1.Backdrop = ReformatPicture() ' set the backdrop
-		    lastFI = Nil
+		    Dim myPicture As Picture
+		    myPicture = c.Picture ' get the picture
+		    Canvas1.Backdrop = ReformatPicture(myPicture) ' set the backdrop
+		    lastFI = SpecialFolder.Temporary.Child("Clipboard.png")
+		    If lastFI.Exists Then lastFI.Remove()
 		    HasPicture = True
-		    Self.Title = "Image"+Str(Canvas1.OrigPicture.Width)+"x"+Str(Canvas1.OrigPicture.Height)
+		    myPicture.Save(lastFI, myPicture.SaveAsPNG)
+		    Self.Title = "Clipboard"
 		  End If
 		  
 		  Return True
@@ -228,8 +232,8 @@ End
 		Function ToolsGreyscale() As Boolean Handles ToolsGreyscale.Action
 		  Dim p As Picture
 		  p = Canvas1.OrigPicture
-		  p.grayscale()
-		  Canvas1.Backdrop = ReformatPicture()
+		  p.Greyscale()
+		  Canvas1.Backdrop = ReformatPicture(p)
 		  
 		  Return True
 		  
@@ -241,7 +245,7 @@ End
 		  Dim p As Picture
 		  p = Canvas1.OrigPicture
 		  p.Hmirror()
-		  Canvas1.Backdrop = ReformatPicture()
+		  Canvas1.Backdrop = ReformatPicture(p)
 		  
 		  Return True
 		  
@@ -253,7 +257,7 @@ End
 		  Dim p As Picture
 		  p = Canvas1.OrigPicture
 		  p.invert()
-		  Canvas1.Backdrop = ReformatPicture()
+		  Canvas1.Backdrop = ReformatPicture(p)
 		  
 		  Return True
 		  
@@ -270,9 +274,22 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
+		Function ToolsRotate180() As Boolean Handles ToolsRotate180.Action
+		  Dim p As Picture
+		  p = Canvas1.OrigPicture
+		  p.Rotate180()
+		  Canvas1.Backdrop = ReformatPicture(p)
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
 		Function ToolsRotateLeft() As Boolean Handles ToolsRotateLeft.Action
-		  Canvas1.OrigPicture = Canvas1.OrigPicture.rotate90ccw()
-		  Canvas1.Backdrop = ReformatPicture()
+		  Dim p As Picture
+		  p = Canvas1.OrigPicture
+		  Canvas1.Backdrop = ReformatPicture(p.Rotate90ccw())
 		  
 		  Return True
 		  
@@ -281,8 +298,9 @@ End
 
 	#tag MenuHandler
 		Function ToolsRotateRight() As Boolean Handles ToolsRotateRight.Action
-		  Canvas1.OrigPicture = Canvas1.OrigPicture.rotate90cw()
-		  Canvas1.Backdrop = ReformatPicture()
+		  Dim p As Picture
+		  p = Canvas1.OrigPicture
+		  Canvas1.Backdrop = ReformatPicture(p.Rotate90cw())
 		  
 		  Return True
 		  
@@ -290,11 +308,9 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
-		Function ToolsScaleDownByHalf() As Boolean Handles ToolsScaleDownByHalf.Action
-		  Dim p As Picture
-		  Canvas1.OrigPicture = Canvas1.OrigPicture.scaleDownByHalf()
-		  Canvas1.Backdrop = ReformatPicture()
-		  Self.Title = "Image"+Str(Canvas1.OrigPicture.Width)+"x"+Str(Canvas1.OrigPicture.Height)
+		Function ToolsScaledownbyhalf() As Boolean Handles ToolsScaledownbyhalf.Action
+		  Canvas1.Backdrop = ReformatPicture(Canvas1.OrigPicture.ScaleDownByHalf())
+		  Self.Title = "Image"+Str(Canvas1.Backdrop.Width)+"x"+Str(Canvas1.Backdrop.Height)
 		  Return True
 		  
 		End Function
@@ -305,7 +321,7 @@ End
 		  Dim p As Picture
 		  p = Canvas1.OrigPicture
 		  p.Vmirror()
-		  Canvas1.Backdrop = ReformatPicture()
+		  Canvas1.Backdrop = ReformatPicture(p)
 		  
 		  Return True
 		  
@@ -322,11 +338,12 @@ End
 
 	#tag Method, Flags = &h0
 		Sub ProcessImage()
+		  If lastFI = Nil Then Return
+		  
 		  Dim p As Picture
+		  
 		  p = Picture.Open(lastFI)
-		  If p = Nil Then
-		    Return
-		  End If
+		  If p = Nil Then Return
 		  
 		  Self.Title = lastFI.Name
 		  Dim q, m As Picture
@@ -334,23 +351,23 @@ End
 		  q = ResizeImage(p, Canvas1.Width, Canvas1.Height)
 		  m = New Picture(Canvas1.Width, Canvas1.Height)
 		  m.Graphics.DrawPicture(q, (Canvas1.Width - q.Width)\2, (Canvas1.Height - q.Height)\2)
-		  Canvas1.Backdrop = ReformatPicture()
+		  Canvas1.Backdrop = ReformatPicture(p)
 		  Canvas1.Refresh()
-		  Self.Title = lastFI.Name
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ReformatPicture() As Picture
-		  If Canvas1.OrigPicture = Nil Then Return Nil
-		  
-		  Dim p As Picture
+		Function ReformatPicture(p As Picture) As Picture
+		  If p = Nil Then Return Nil
 		  
 		  Dim w0, w1, h0, h1 As Integer
-		  w0 = Canvas1.OrigPicture.Width
-		  h0 = Canvas1.OrigPicture.Height
+		  w0 = p.Width
+		  h0 = p.Height
 		  w1 = w0 * ViewSize / 100
 		  h1 = h0 * ViewSize / 100
+		  Canvas1.OrigPicture = New Picture(w0, h0)
+		  Canvas1.OrigPicture.Graphics.DrawPicture(p, 0, 0)
 		  p = New Picture(w1, h1)
 		  p.Graphics.DrawPicture(Canvas1.OrigPicture, 0, 0, w1, h1, 0, 0, w0, h0)
 		  Return p
@@ -469,7 +486,7 @@ End
 	#tag Event
 		Sub SelectionChanged(item As DesktopMenuItem)
 		  ViewSize = (me.SelectedRowIndex+1) * 10
-		  Canvas1.Backdrop = ReformatPicture()
+		  Canvas1.Backdrop = ReformatPicture(Canvas1.OrigPicture)
 		  
 		End Sub
 	#tag EndEvent

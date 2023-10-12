@@ -1,8 +1,8 @@
 #tag Module
 Protected Module ImageTools
 	#tag Method, Flags = &h0
-		Sub Brightness(extends pix as picture, variance as integer)
-		  // Adjusts brightness via .Transform ==> variance (positive or negative)
+		Sub Brightness(extends pix as picture,variance as integer)
+		  // Adjusts brightness via .Transform =  = > variance (positive or negative)
 		  // checks for negative values and values above 255.
 		  
 		  If variance = 0 Then Return
@@ -141,7 +141,7 @@ Protected Module ImageTools
 
 	#tag Method, Flags = &h0
 		Sub DrawPix(extends pix2 as picture, pix as picture,X as integer, Y as integer)
-		  // Draws a part of pix into pix2 ==> x = left, y = top (width = width of pix; height = height of pix)
+		  // Draws a part of pix into pix2 =  = > x = left, y = top (width = width of pix; height = height of pix)
 		  // Not really useful. Just an exercice in unrolling loops
 		  
 		  Dim i, j, n As Integer
@@ -296,7 +296,7 @@ Protected Module ImageTools
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function getBicubic(x as integer, y as integer, wd as integer, ht as integer, rs as RGBSurface) As color
+		Private Function GetBicubic(x as integer, y as integer, wd as integer, ht as integer, rs as RGBSurface) As color
 		  // Used by scaleDouble and scaleDownByHalf
 		  // gets the average colour for a square around a said point  at (x, y):
 		  // +---+---+---+---+
@@ -314,7 +314,7 @@ Protected Module ImageTools
 		  // +---+---+---+---+
 		  
 		  // of course, if x = 0 or y = 0, we will use:
-		  // Y = 0 ==>
+		  // Y = 0 =  = >
 		  // +---+---+---+---+
 		  // +   +XXX+   +   +
 		  // +   +YYY+   +   +
@@ -330,7 +330,7 @@ Protected Module ImageTools
 		  // +---+---+---+---+
 		  
 		  // or:
-		  // Y = 0 ==>
+		  // Y = 0 =  = >
 		  // +---+---+---+---+
 		  // +   +   +   +   +
 		  // +   +   +   +   +
@@ -346,7 +346,7 @@ Protected Module ImageTools
 		  // +---+---+---+---+
 		  
 		  // or:
-		  // X = 0 & Y = 0 ==>
+		  // X = 0 & Y = 0 =  = >
 		  // +---+---+---+---+
 		  // +XXX+   +   +   +
 		  // +YYY+   +   +   +
@@ -1043,8 +1043,8 @@ Protected Module ImageTools
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Invert(extends pix as picture)
-		  // Inversion. each channel is set to 255-value.
+		Sub invert(extends pix as picture)
+		  // Inversion. each channel is set To 255-value.
 		  
 		  Dim x, y, i, j, n As Integer
 		  Dim i1, i2, i3, i4, i5, i6, i7 As Integer
@@ -1216,10 +1216,11 @@ Protected Module ImageTools
 
 	#tag Method, Flags = &h0
 		Function Resize(pix as picture, w as integer, h as integer) As picture
-		  // wrapper to. DrawPicture
-		  // Normally produces a good quality image, but there have been complaints on Windows.
-		  // Two ratios are computed to determine how much to resize the picture (non-square image).
-		  // The highest ratio is used.
+		  // wrapper To.DrawPicture
+		  // normally produces a good quality image
+		  // but there have been complaints on Windows
+		  // two ratios are computed To determine how much to resize the picture (non-square image)
+		  // the highest ratio is used.
 		  
 		  Dim r1, r2 As Double
 		  Dim x, y As Integer
@@ -1430,8 +1431,9 @@ Protected Module ImageTools
 		Function Rotate90ccw(extends pix as picture) As picture
 		  // 270° rotation, aka counter-clockwise
 		  // Quite fast for pure RB code... If I may say so myself ;-)
-		  // Contrary to 180°, we have to return a new image:
-		  // just working on pix will produced a truncated image, since we can't resize pix now...
+		  // contrary To 180°, we have To return a new image:
+		  // just working on pix will produced a truncated image
+		  // since we can't resize pix now...
 		  
 		  Dim p, q As Picture
 		  Dim x, y, i, j, n As Integer
@@ -1557,8 +1559,9 @@ Protected Module ImageTools
 		Function Rotate90cw(extends pix as picture) As picture
 		  // 90° rotation, aka clockwise
 		  // Quite fast for pure RB code... If I may say so myself ;-)
-		  // Contrary to 180°, we have to return a new image:
-		  // just working on pix will produced a truncated image, since we can't resize pix now...
+		  // contrary To 180°, we have To return a new image:
+		  // just working on pix will produced a truncated image
+		  // since we can't resize pix now...
 		  
 		  Dim p, q As Picture
 		  Dim x, y, i, j, n As Integer
@@ -2221,8 +2224,8 @@ Protected Module ImageTools
 
 	#tag Method, Flags = &h0
 		Function ScaleDownByHalf(extends pix as picture) As picture
-		  // Using bicubic interpolation, the image is scaled down to half (actually quarter: half height, half width).
-		  // Results are quite good, but a tad slow to my taste.
+		  // using bicubic interpolation, the image is scaled down to half (actually quarter: half height, half width).
+		  // results are quite good, but a tad slow to my taste (1/4 second for a 640x480 on my Ti 17").
 		  
 		  Dim p, q As Picture
 		  Dim x, y, i, j, n As Integer
@@ -2358,8 +2361,8 @@ Protected Module ImageTools
 
 	#tag Method, Flags = &h0
 		Sub Vmirror(extends pix As Picture)
-		  // Vertical mirror.
-		  // See also Horizontal mirror
+		  // Horizontal mirror.
+		  // see also vertical mirror
 		  // Quite fast for pure RB code... If I may say so myself ;-)
 		  
 		  Dim p As Picture

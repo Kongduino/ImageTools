@@ -236,6 +236,14 @@ Inherits DesktopCanvas
 			Type="Picture"
 			EditorType=""
 		#tag EndViewProperty
+		#tag ViewProperty
+			Name="OrigPicture"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Picture"
+			EditorType=""
+		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass

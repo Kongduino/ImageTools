@@ -176,6 +176,17 @@ Begin Menu MainMenuBar
          AutoEnable = False
          Visible = True
       End
+      Begin DesktopMenuItem ToolsRotate180
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "Rotate 180°"
+         ShortcutKey = "8"
+         Shortcut = "Cmd+8"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
       Begin DesktopMenuItem ToolsHorizontalMirror
          SpecialMenu = 0
          Index = -2147483648

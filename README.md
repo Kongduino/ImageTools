@@ -69,3 +69,17 @@ See also Horizontal mirror
 The app accepts drag'n'drop in and out of the app, as well as copy/paste. Some of the library's functions are present in the Tools menu. Not a very useful app yet, but enough for a demo...
 
 ![Screenshot](Screenshot.png)
+
+## Update 2023/10/12
+
+Following reports on the Forum, I found a bug in Reset (which extended farther than that actually). An image copied from the clipboard didn't have a FolderItem, so that broke when the code was looking for one. Clipboard images now have a FolderItem in the Temporary special folder.
+
+I was told Greyscale and Invert didn't work, they seem to:
+
+![InvertGreyscale](InvertGreyscale.gif)
+
+Also, I was told that drag'n'drop wasn't implemented: I BEG YOUR PARDON.
+
+![DnD](DnD.gif)
+
+![DnD_Implementation](DnD_Implementation.png)
