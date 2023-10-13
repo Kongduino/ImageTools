@@ -86,6 +86,7 @@ Also, I was told that drag'n'drop wasn't implemented: I BEG YOUR PARDON.
 
 ## Update 2023/10/13
 
-* Added a 4 levels of grey greyscale function.
+* Added a 4-level greyscale function. I need this for my retro-computing endeavours...
 * On opening the picture, and resizing the window, if the image is too big, the app calculates the ideal view size.
 
+![FourGreys](FourGreys.png)
