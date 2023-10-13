@@ -295,6 +295,83 @@ Protected Module ImageTools
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub FourGreys(extends pix as picture)
+		  // Converts the image to 4 levels of grayscale
+		  // This is the plainest method possible: average out r/g/b...
+		  // for another, slightly more refined method, see grayscale above.
+		  // this version features loops only partly unrolled.
+		  // see grayscale for fully unrolled loops.
+		  
+		  Dim rs1 As RGBSurface
+		  Dim w, h, i, j, n As Integer
+		  Dim k As UInt8
+		  Dim c As color
+		  
+		  w = pix.Width
+		  h = pix.Height
+		  rs1 = pix.RGBSurface
+		  
+		  w = w-1
+		  h = h-1
+		  For j = 0 To h
+		    For i = 0 To w Step 10
+		      n = i
+		      c = rs1.Pixel(n, j)
+		      k = (c.red+c.green+c.blue)\3
+		      rs1.Pixel(n, j) = FourLevels(k)
+		      n = n+1
+		      c = rs1.Pixel(n, j)
+		      k = (c.red+c.green+c.blue)\3
+		      rs1.Pixel(n, j) = FourLevels(k)
+		      n = n+1
+		      c = rs1.Pixel(n, j)
+		      k = (c.red+c.green+c.blue)\3
+		      rs1.Pixel(n, j) = FourLevels(k)
+		      n = n+1
+		      c = rs1.Pixel(n, j)
+		      k = (c.red+c.green+c.blue)\3
+		      rs1.Pixel(n, j) = FourLevels(k)
+		      n = n+1
+		      c = rs1.Pixel(n, j)
+		      k = (c.red+c.green+c.blue)\3
+		      rs1.Pixel(n, j) = FourLevels(k)
+		      n = n+1
+		      c = rs1.Pixel(n, j)
+		      k = (c.red+c.green+c.blue)\3
+		      rs1.Pixel(n, j) = FourLevels(k)
+		      n = n+1
+		      c = rs1.Pixel(n, j)
+		      k = (c.red+c.green+c.blue)\3
+		      rs1.Pixel(n, j) = FourLevels(k)
+		      n = n+1
+		      c = rs1.Pixel(n, j)
+		      k = (c.red+c.green+c.blue)\3
+		      rs1.Pixel(n, j) = FourLevels(k)
+		      n = n+1
+		      c = rs1.Pixel(n, j)
+		      k = (c.red+c.green+c.blue)\3
+		      rs1.Pixel(n, j) = FourLevels(k)
+		      n = n+1
+		      c = rs1.Pixel(n, j)
+		      k = (c.red+c.green+c.blue)\3
+		      rs1.Pixel(n, j) = FourLevels(k)
+		    Next
+		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function FourLevels(k As UInt8) As Color
+		  If k > 192 Then Return &cffffff
+		  If k > 128 Then Return &caaaaaa
+		  If k > 64 Then Return &c555555
+		  Return &c000000
+		  
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Function GetBicubic(x as integer, y as integer, wd as integer, ht as integer, rs as RGBSurface) As color
 		  // Used by scaleDouble and scaleDownByHalf
@@ -489,7 +566,7 @@ Protected Module ImageTools
 		  g = g\16
 		  b = b\16
 		  
-		  Return RGB(r, g, b)
+		  Return Color.RGB(r, g, b)
 		  
 		End Function
 	#tag EndMethod
@@ -523,266 +600,266 @@ Protected Module ImageTools
 		      n = i
 		      c = rs1.Pixel(n, j)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i1)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i1) = rgb(k, k, k)
+		      rs1.Pixel(n, i1) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i2)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i2) = rgb(k, k, k)
+		      rs1.Pixel(n, i2) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i3)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i3) = rgb(k, k, k)
+		      rs1.Pixel(n, i3) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i4)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i4) = rgb(k, k, k)
+		      rs1.Pixel(n, i4) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i5)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i5) = rgb(k, k, k)
+		      rs1.Pixel(n, i5) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i6)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i6) = rgb(k, k, k)
+		      rs1.Pixel(n, i6) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i7)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i7) = rgb(k, k, k)
+		      rs1.Pixel(n, i7) = Color.RGB(k, k, k)
 		      
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i1)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i1) = rgb(k, k, k)
+		      rs1.Pixel(n, i1) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i2)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i2) = rgb(k, k, k)
+		      rs1.Pixel(n, i2) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i3)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i3) = rgb(k, k, k)
+		      rs1.Pixel(n, i3) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i4)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i4) = rgb(k, k, k)
+		      rs1.Pixel(n, i4) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i5)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i5) = rgb(k, k, k)
+		      rs1.Pixel(n, i5) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i6)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i6) = rgb(k, k, k)
+		      rs1.Pixel(n, i6) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i7)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i7) = rgb(k, k, k)
+		      rs1.Pixel(n, i7) = Color.RGB(k, k, k)
 		      
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i1)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i1) = rgb(k, k, k)
+		      rs1.Pixel(n, i1) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i2)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i2) = rgb(k, k, k)
+		      rs1.Pixel(n, i2) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i3)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i3) = rgb(k, k, k)
+		      rs1.Pixel(n, i3) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i4)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i4) = rgb(k, k, k)
+		      rs1.Pixel(n, i4) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i5)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i5) = rgb(k, k, k)
+		      rs1.Pixel(n, i5) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i6)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i6) = rgb(k, k, k)
+		      rs1.Pixel(n, i6) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i7)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i7) = rgb(k, k, k)
+		      rs1.Pixel(n, i7) = Color.RGB(k, k, k)
 		      
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i1)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i1) = rgb(k, k, k)
+		      rs1.Pixel(n, i1) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i2)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i2) = rgb(k, k, k)
+		      rs1.Pixel(n, i2) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i3)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i3) = rgb(k, k, k)
+		      rs1.Pixel(n, i3) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i4)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i4) = rgb(k, k, k)
+		      rs1.Pixel(n, i4) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i5)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i5) = rgb(k, k, k)
+		      rs1.Pixel(n, i5) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i6)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i6) = rgb(k, k, k)
+		      rs1.Pixel(n, i6) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i7)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i7) = rgb(k, k, k)
+		      rs1.Pixel(n, i7) = Color.RGB(k, k, k)
 		      
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i1)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i1) = rgb(k, k, k)
+		      rs1.Pixel(n, i1) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i2)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i2) = rgb(k, k, k)
+		      rs1.Pixel(n, i2) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i3)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i3) = rgb(k, k, k)
+		      rs1.Pixel(n, i3) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i4)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i4) = rgb(k, k, k)
+		      rs1.Pixel(n, i4) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i5)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i5) = rgb(k, k, k)
+		      rs1.Pixel(n, i5) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i6)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i6) = rgb(k, k, k)
+		      rs1.Pixel(n, i6) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i7)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i7) = rgb(k, k, k)
+		      rs1.Pixel(n, i7) = Color.RGB(k, k, k)
 		      
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i1)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i1) = rgb(k, k, k)
+		      rs1.Pixel(n, i1) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i2)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i2) = rgb(k, k, k)
+		      rs1.Pixel(n, i2) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i3)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i3) = rgb(k, k, k)
+		      rs1.Pixel(n, i3) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i4)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i4) = rgb(k, k, k)
+		      rs1.Pixel(n, i4) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i5)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i5) = rgb(k, k, k)
+		      rs1.Pixel(n, i5) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i6)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i6) = rgb(k, k, k)
+		      rs1.Pixel(n, i6) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i7)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i7) = rgb(k, k, k)
+		      rs1.Pixel(n, i7) = Color.RGB(k, k, k)
 		      
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i1)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i1) = rgb(k, k, k)
+		      rs1.Pixel(n, i1) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i2)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i2) = rgb(k, k, k)
+		      rs1.Pixel(n, i2) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i3)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i3) = rgb(k, k, k)
+		      rs1.Pixel(n, i3) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i4)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i4) = rgb(k, k, k)
+		      rs1.Pixel(n, i4) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i5)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i5) = rgb(k, k, k)
+		      rs1.Pixel(n, i5) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i6)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i6) = rgb(k, k, k)
+		      rs1.Pixel(n, i6) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i7)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i7) = rgb(k, k, k)
+		      rs1.Pixel(n, i7) = Color.RGB(k, k, k)
 		      
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i1)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i1) = rgb(k, k, k)
+		      rs1.Pixel(n, i1) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i2)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i2) = rgb(k, k, k)
+		      rs1.Pixel(n, i2) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i3)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i3) = rgb(k, k, k)
+		      rs1.Pixel(n, i3) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i4)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i4) = rgb(k, k, k)
+		      rs1.Pixel(n, i4) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i5)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i5) = rgb(k, k, k)
+		      rs1.Pixel(n, i5) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i6)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i6) = rgb(k, k, k)
+		      rs1.Pixel(n, i6) = Color.RGB(k, k, k)
 		      
 		      c = rs1.Pixel(n, i7)
 		      k = (C.Red * 0.275) + (C.Green * 0.58) + (C.Blue * 0.145)
-		      rs1.Pixel(n, i7) = rgb(k, k, k)
+		      rs1.Pixel(n, i7) = Color.RGB(k, k, k)
 		    Next
 		  Next
 		  
@@ -813,43 +890,43 @@ Protected Module ImageTools
 		      n = i
 		      c = rs1.Pixel(n, j)
 		      k = (c.red+c.green+c.blue)\3
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (c.red+c.green+c.blue)\3
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (c.red+c.green+c.blue)\3
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (c.red+c.green+c.blue)\3
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (c.red+c.green+c.blue)\3
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (c.red+c.green+c.blue)\3
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (c.red+c.green+c.blue)\3
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (c.red+c.green+c.blue)\3
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (c.red+c.green+c.blue)\3
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		      n = n+1
 		      c = rs1.Pixel(n, j)
 		      k = (c.red+c.green+c.blue)\3
-		      rs1.Pixel(n, j) = rgb(k, k, k)
+		      rs1.Pixel(n, j) = Color.RGB(k, k, k)
 		    Next
 		  Next
 		End Sub
@@ -1067,147 +1144,147 @@ Protected Module ImageTools
 		    For j = 0 To x Step 8
 		      n = j
 		      c = srf.Pixel(n, i)
-		      srf.Pixel(n, i) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i1)
-		      srf.Pixel(n, i1) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i1) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i2)
-		      srf.Pixel(n, i2) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i2) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i3)
-		      srf.Pixel(n, i3) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i3) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i4)
-		      srf.Pixel(n, i4) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i4) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i5)
-		      srf.Pixel(n, i5) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i5) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i6)
-		      srf.Pixel(n, i6) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i6) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i7)
-		      srf.Pixel(n, i7) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i7) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      
 		      n = n+1
 		      c = srf.Pixel(n, i)
-		      srf.Pixel(n, i) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i1)
-		      srf.Pixel(n, i1) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i1) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i2)
-		      srf.Pixel(n, i2) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i2) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i3)
-		      srf.Pixel(n, i3) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i3) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i4)
-		      srf.Pixel(n, i4) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i4) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i5)
-		      srf.Pixel(n, i5) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i5) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i6)
-		      srf.Pixel(n, i6) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i6) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i7)
-		      srf.Pixel(n, i7) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i7) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      
 		      n = n+1
 		      c = srf.Pixel(n, i)
-		      srf.Pixel(n, i) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i1)
-		      srf.Pixel(n, i1) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i1) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i2)
-		      srf.Pixel(n, i2) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i2) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i3)
-		      srf.Pixel(n, i3) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i3) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i4)
-		      srf.Pixel(n, i4) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i4) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i5)
-		      srf.Pixel(n, i5) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i5) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i6)
-		      srf.Pixel(n, i6) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i6) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i7)
-		      srf.Pixel(n, i7) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i7) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      
 		      n = n+1
 		      c = srf.Pixel(n, i)
-		      srf.Pixel(n, i) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i1)
-		      srf.Pixel(n, i1) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i1) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i2)
-		      srf.Pixel(n, i2) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i2) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i3)
-		      srf.Pixel(n, i3) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i3) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i4)
-		      srf.Pixel(n, i4) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i4) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i5)
-		      srf.Pixel(n, i5) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i5) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i6)
-		      srf.Pixel(n, i6) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i6) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i7)
-		      srf.Pixel(n, i7) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i7) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      
 		      n = n+1
 		      c = srf.Pixel(n, i)
-		      srf.Pixel(n, i) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i1)
-		      srf.Pixel(n, i1) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i1) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i2)
-		      srf.Pixel(n, i2) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i2) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i3)
-		      srf.Pixel(n, i3) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i3) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i4)
-		      srf.Pixel(n, i4) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i4) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i5)
-		      srf.Pixel(n, i5) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i5) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i6)
-		      srf.Pixel(n, i6) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i6) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i7)
-		      srf.Pixel(n, i7) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i7) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      
 		      n = n+1
 		      c = srf.Pixel(n, i)
-		      srf.Pixel(n, i) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i1)
-		      srf.Pixel(n, i1) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i1) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i2)
-		      srf.Pixel(n, i2) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i2) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i3)
-		      srf.Pixel(n, i3) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i3) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i4)
-		      srf.Pixel(n, i4) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i4) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i5)
-		      srf.Pixel(n, i5) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i5) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i6)
-		      srf.Pixel(n, i6) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i6) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i7)
-		      srf.Pixel(n, i7) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i7) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      
 		      n = n+1
 		      c = srf.Pixel(n, i)
-		      srf.Pixel(n, i) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i1)
-		      srf.Pixel(n, i1) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i1) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i2)
-		      srf.Pixel(n, i2) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i2) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i3)
-		      srf.Pixel(n, i3) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i3) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i4)
-		      srf.Pixel(n, i4) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i4) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i5)
-		      srf.Pixel(n, i5) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i5) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i6)
-		      srf.Pixel(n, i6) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i6) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i7)
-		      srf.Pixel(n, i7) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i7) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      
 		      n = n+1
 		      c = srf.Pixel(n, i)
-		      srf.Pixel(n, i) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i1)
-		      srf.Pixel(n, i1) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i1) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i2)
-		      srf.Pixel(n, i2) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i2) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i3)
-		      srf.Pixel(n, i3) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i3) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i4)
-		      srf.Pixel(n, i4) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i4) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i5)
-		      srf.Pixel(n, i5) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i5) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i6)
-		      srf.Pixel(n, i6) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i6) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		      c = srf.Pixel(n, i7)
-		      srf.Pixel(n, i7) = rgb(255-c.red, 255-c.green, 255-c.blue)
+		      srf.Pixel(n, i7) = Color.RGB(255-c.red, 255-c.green, 255-c.blue)
 		    Next
 		  Next
 		  

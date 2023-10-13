@@ -83,3 +83,9 @@ Also, I was told that drag'n'drop wasn't implemented: I BEG YOUR PARDON.
 ![DnD](DnD.gif)
 
 ![DnD_Implementation](DnD_Implementation.png)
+
+## Update 2023/10/13
+
+* Added a 4 levels of grey greyscale function.
+* On opening the picture, and resizing the window, if the image is too big, the app calculates the ideal view size.
+

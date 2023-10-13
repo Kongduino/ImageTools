@@ -154,6 +154,17 @@ Begin Menu MainMenuBar
          AutoEnable = False
          Visible = True
       End
+      Begin DesktopMenuItem Tools4Greys
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "4 Greys"
+         ShortcutKey = "4"
+         Shortcut = "Cmd+4"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
       Begin DesktopMenuItem ToolsRotateLeft
          SpecialMenu = 0
          Index = -2147483648

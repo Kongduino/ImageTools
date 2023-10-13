@@ -10,7 +10,7 @@ Begin DesktopWindow Window1
    HasFullScreenButton=   False
    HasMaximizeButton=   True
    HasMinimizeButton=   True
-   Height          =   660
+   Height          =   496
    ImplicitInstance=   True
    MacProcID       =   0
    MaximumHeight   =   32000
@@ -23,12 +23,12 @@ Begin DesktopWindow Window1
    Title           =   "Untitled"
    Type            =   0
    Visible         =   True
-   Width           =   860
+   Width           =   644
    Begin DesktopImageViewer ImageViewer1
       Active          =   False
       AllowAutoDeactivate=   True
       Enabled         =   True
-      Height          =   620
+      Height          =   456
       Image           =   0
       Index           =   -2147483648
       InitialParent   =   ""
@@ -47,7 +47,7 @@ Begin DesktopWindow Window1
       Top             =   20
       Transparent     =   False
       Visible         =   True
-      Width           =   820
+      Width           =   604
       _mIndex         =   0
       _mInitialParent =   ""
       _mName          =   ""
@@ -60,7 +60,7 @@ Begin DesktopWindow Window1
          Backdrop        =   0
          DragPicture     =   0
          Enabled         =   True
-         Height          =   600
+         Height          =   436
          Index           =   -2147483648
          InitialParent   =   "ImageViewer1"
          Left            =   30
@@ -78,7 +78,7 @@ Begin DesktopWindow Window1
          Top             =   30
          Transparent     =   True
          Visible         =   True
-         Width           =   800
+         Width           =   584
       End
    End
    Begin Timer statusTimer
@@ -117,13 +117,13 @@ Begin DesktopWindow Window1
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   638
+      Top             =   474
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   714
+      Width           =   498
    End
-   Begin DesktopPopupMenu PopupMenu1
+   Begin DesktopPopupMenu pmViewSize
       AllowAutoDeactivate=   True
       Bold            =   False
       Enabled         =   True
@@ -135,7 +135,7 @@ Begin DesktopWindow Window1
       InitialParent   =   ""
       InitialValue    =   ""
       Italic          =   False
-      Left            =   760
+      Left            =   544
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   False
@@ -147,7 +147,7 @@ Begin DesktopWindow Window1
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   638
+      Top             =   474
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -182,6 +182,27 @@ End
 		End Sub
 	#tag EndEvent
 
+	#tag Event
+		Sub Resized()
+		  Dim p As Picture
+		  p = Canvas1.OrigPicture
+		  
+		  If (Canvas1.Width < p.Width) Or (Canvas1.Height < p.Height) Then
+		    Dim r0, r1 As Double
+		    Dim x As Integer
+		    r0 = Canvas1.Width / p.Width
+		    r1 = Canvas1.Height / p.Height
+		    If r1 < r0 Then r0 = r1
+		    x = (r0 * 10) -1
+		    If x < 0 Then x = 0
+		    pmViewSize.SelectedRowIndex = x
+		  End If
+		  
+		  Canvas1.Backdrop = ReformatPicture(p)
+		  
+		End Sub
+	#tag EndEvent
+
 
 	#tag MenuHandler
 		Function EditCopy() As Boolean Handles EditCopy.Action
@@ -207,13 +228,31 @@ End
 		  If c.PictureAvailable Then
 		    Dim myPicture As Picture
 		    myPicture = c.Picture ' get the picture
-		    Canvas1.Backdrop = ReformatPicture(myPicture) ' set the backdrop
 		    lastFI = SpecialFolder.Temporary.Child("Clipboard.png")
 		    If lastFI.Exists Then lastFI.Remove()
 		    HasPicture = True
 		    myPicture.Save(lastFI, myPicture.SaveAsPNG)
-		    Self.Title = "Clipboard"
+		    Self.Title = "Clipboard"+Str(myPicture.Width)+"x"+Str(myPicture.Height)
+		    ProcessImage()
+		  Else
+		    LogStatus "Clipboard doesn't contain any Picture!"
 		  End If
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function Tools4Greys() As Boolean Handles Tools4Greys.Action
+		  Dim p As Picture
+		  p = Canvas1.OrigPicture
+		  Dim t0, t1 As Double
+		  t0 = System.Microseconds 
+		  p.FourGreys()
+		  t1 = System.Microseconds - t0
+		  LogStatus Format(t1, "###,###")+" µs"
+		  Canvas1.Backdrop = ReformatPicture(p)
 		  
 		  Return True
 		  
@@ -232,7 +271,11 @@ End
 		Function ToolsGreyscale() As Boolean Handles ToolsGreyscale.Action
 		  Dim p As Picture
 		  p = Canvas1.OrigPicture
+		  Dim t0, t1 As Double
+		  t0 = System.Microseconds 
 		  p.Greyscale()
+		  t1 = System.Microseconds - t0
+		  LogStatus Format(t1, "###,###")+" µs"
 		  Canvas1.Backdrop = ReformatPicture(p)
 		  
 		  Return True
@@ -244,7 +287,11 @@ End
 		Function ToolsHorizontalMirror() As Boolean Handles ToolsHorizontalMirror.Action
 		  Dim p As Picture
 		  p = Canvas1.OrigPicture
+		  Dim t0, t1 As Double
+		  t0 = System.Microseconds 
 		  p.Hmirror()
+		  t1 = System.Microseconds - t0
+		  LogStatus Format(t1, "###,###")+" µs"
 		  Canvas1.Backdrop = ReformatPicture(p)
 		  
 		  Return True
@@ -256,7 +303,11 @@ End
 		Function ToolsInvert() As Boolean Handles ToolsInvert.Action
 		  Dim p As Picture
 		  p = Canvas1.OrigPicture
+		  Dim t0, t1 As Double
+		  t0 = System.Microseconds 
 		  p.invert()
+		  t1 = System.Microseconds - t0
+		  LogStatus Format(t1, "###,###")+" µs"
 		  Canvas1.Backdrop = ReformatPicture(p)
 		  
 		  Return True
@@ -277,7 +328,11 @@ End
 		Function ToolsRotate180() As Boolean Handles ToolsRotate180.Action
 		  Dim p As Picture
 		  p = Canvas1.OrigPicture
+		  Dim t0, t1 As Double
+		  t0 = System.Microseconds 
 		  p.Rotate180()
+		  t1 = System.Microseconds - t0
+		  LogStatus Format(t1, "###,###")+" µs"
 		  Canvas1.Backdrop = ReformatPicture(p)
 		  
 		  Return True
@@ -289,7 +344,12 @@ End
 		Function ToolsRotateLeft() As Boolean Handles ToolsRotateLeft.Action
 		  Dim p As Picture
 		  p = Canvas1.OrigPicture
-		  Canvas1.Backdrop = ReformatPicture(p.Rotate90ccw())
+		  Dim t0, t1 As Double
+		  t0 = System.Microseconds 
+		  p = p.Rotate90ccw()
+		  t1 = System.Microseconds - t0
+		  LogStatus Format(t1, "###,###")+" µs"
+		  Canvas1.Backdrop = ReformatPicture(p)
 		  
 		  Return True
 		  
@@ -300,7 +360,12 @@ End
 		Function ToolsRotateRight() As Boolean Handles ToolsRotateRight.Action
 		  Dim p As Picture
 		  p = Canvas1.OrigPicture
-		  Canvas1.Backdrop = ReformatPicture(p.Rotate90cw())
+		  Dim t0, t1 As Double
+		  t0 = System.Microseconds 
+		  p = p.Rotate90cw()
+		  t1 = System.Microseconds - t0
+		  LogStatus Format(t1, "###,###")+" µs"
+		  Canvas1.Backdrop = ReformatPicture(p)
 		  
 		  Return True
 		  
@@ -309,7 +374,13 @@ End
 
 	#tag MenuHandler
 		Function ToolsScaledownbyhalf() As Boolean Handles ToolsScaledownbyhalf.Action
-		  Canvas1.Backdrop = ReformatPicture(Canvas1.OrigPicture.ScaleDownByHalf())
+		  Dim p As Picture
+		  Dim t0, t1 As Double
+		  t0 = System.Microseconds 
+		  p = Canvas1.OrigPicture.ScaleDownByHalf()
+		  t1 = System.Microseconds - t0
+		  LogStatus Format(t1, "###,###")+" µs"
+		  Canvas1.Backdrop = ReformatPicture(p)
 		  Self.Title = "Image"+Str(Canvas1.Backdrop.Width)+"x"+Str(Canvas1.Backdrop.Height)
 		  Return True
 		  
@@ -320,7 +391,11 @@ End
 		Function ToolsVerticalMirror() As Boolean Handles ToolsVerticalMirror.Action
 		  Dim p As Picture
 		  p = Canvas1.OrigPicture
+		  Dim t0, t1 As Double
+		  t0 = System.Microseconds 
 		  p.Vmirror()
+		  t1 = System.Microseconds - t0
+		  LogStatus Format(t1, "###,###")+" µs"
 		  Canvas1.Backdrop = ReformatPicture(p)
 		  
 		  Return True
@@ -346,11 +421,18 @@ End
 		  If p = Nil Then Return
 		  
 		  Self.Title = lastFI.Name
-		  Dim q, m As Picture
 		  
-		  q = ResizeImage(p, Canvas1.Width, Canvas1.Height)
-		  m = New Picture(Canvas1.Width, Canvas1.Height)
-		  m.Graphics.DrawPicture(q, (Canvas1.Width - q.Width)\2, (Canvas1.Height - q.Height)\2)
+		  If (Canvas1.Width < p.Width) Or (Canvas1.Height < p.Height) Then
+		    Dim r0, r1 As Double
+		    Dim x As Integer
+		    r0 = Canvas1.Width / p.Width
+		    r1 = Canvas1.Height / p.Height
+		    If r1 < r0 Then r0 = r1
+		    x = r0 * 10
+		    pmViewSize.SelectedRowIndex = x
+		    ViewSize = (x+1) * 10
+		  End If
+		  
 		  Canvas1.Backdrop = ReformatPicture(p)
 		  Canvas1.Refresh()
 		  
@@ -472,7 +554,7 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events PopupMenu1
+#tag Events pmViewSize
 	#tag Event
 		Sub Opening()
 		  Dim i As Integer
