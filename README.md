@@ -93,7 +93,7 @@ Also, I was told that drag'n'drop wasn't implemented: I BEG YOUR PARDON.
 
 ## Update 2023/10/14
 
-* Added adjustment of Brightness, +/- 10. I should probably make it a slider, but anyway...
+* Added adjustment for brightness, +/- 10. I should probably make it a slider, but anyway...
 * Added a function JUST FOR ME, `Save for PC-G850`. It produces z80 ASM code to display an image on a Sharp pokekon. Not very useful for you, probably.
 * Working on a regular `Save` option.
 
