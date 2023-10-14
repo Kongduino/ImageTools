@@ -1,7 +1,7 @@
 #tag Module
 Protected Module ImageTools
 	#tag Method, Flags = &h0
-		Sub Brightness(extends pix as picture,variance as integer)
+		Sub Brightness(extends pix as picture, variance as integer)
 		  // Adjusts brightness via .Transform =  = > variance (positive or negative)
 		  // checks for negative values and values above 255.
 		  
@@ -13,10 +13,10 @@ Protected Module ImageTools
 		  
 		  srf = pix.RGBSurface
 		  For i = 0 To 255
-		    n = i+variance
+		    n = i + variance
 		    if n<0 Then
 		      n = 0
-		    ElseIf n>255 Then
+		    ElseIf n > 255 Then
 		      n = 255
 		    End If
 		    map(i) = n

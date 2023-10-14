@@ -17,6 +17,29 @@ Begin Menu MainMenuBar
          AutoEnable = True
          Visible = True
       End
+      Begin DesktopMenuItem FileSave
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "Save..."
+         ShortcutKey = "S"
+         Shortcut = "Cmd+S"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem FileSaveforPCG850
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "Save for PC-G850..."
+         ShortcutKey = "S"
+         Shortcut = "Cmd+Shift+S"
+         MenuModifier = True
+         AltMenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
    End
    Begin DesktopMenuItem EditMenu
       SpecialMenu = 0
@@ -242,6 +265,29 @@ Begin Menu MainMenuBar
          MenuModifier = True
          AutoEnabled = False
          AutoEnable = False
+         Visible = True
+      End
+      Begin DesktopMenuItem ToolsIncreaseBrightness
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "Increase Brightness"
+         ShortcutKey = "B"
+         Shortcut = "Cmd+B"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem ToolsDecreaseBrightness
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "Decrease Brightness"
+         ShortcutKey = "B"
+         Shortcut = "Cmd+Shift+B"
+         MenuModifier = True
+         AltMenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
          Visible = True
       End
    End

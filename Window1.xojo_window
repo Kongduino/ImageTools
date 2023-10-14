@@ -186,6 +186,7 @@ End
 		Sub Resized()
 		  Dim p As Picture
 		  p = Canvas1.OrigPicture
+		  If p = Nil Then Return
 		  
 		  If (Canvas1.Width < p.Width) Or (Canvas1.Height < p.Height) Then
 		    Dim r0, r1 As Double
@@ -193,7 +194,7 @@ End
 		    r0 = Canvas1.Width / p.Width
 		    r1 = Canvas1.Height / p.Height
 		    If r1 < r0 Then r0 = r1
-		    x = (r0 * 10) -1
+		    x = (r0 * 10) - 1
 		    If x < 0 Then x = 0
 		    pmViewSize.SelectedRowIndex = x
 		  End If
@@ -244,6 +245,143 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
+		Function FileSaveforPCG850() As Boolean Handles FileSaveforPCG850.Action
+		  Dim p As Picture
+		  Dim r0, r1 As Double
+		  Dim w, h, fw, fh, n As Integer
+		  p = Canvas1.OrigPicture
+		  p.FourGreys()
+		  w = p.Width
+		  h = p.Height
+		  If w > 144 Or h > 48 Then
+		    r0 = 144/w
+		    r1 = 48/h
+		    If r1 < r0 Then r0 = r1
+		    fw = w * r0
+		    fh = h * r0
+		  Else
+		    fw = w
+		    fh = h
+		  End If
+		  // 8 bits in height
+		  // Height needs to be a multiple of 8
+		  If fh Mod 8 > 0 Then
+		    fh = fh + 8 - (fh Mod 8)
+		  End If
+		  
+		  Dim pc As Picture
+		  pc = New Picture(fw, fh)
+		  pc.Graphics.DrawingColor = &cffffff
+		  pc.Graphics.FillRectangle(0, 0, fw, fh)
+		  pc.Graphics.DrawPicture(p, 0, 0, fw, fh, 0, 0, w, h)
+		  Canvas1.Backdrop = pc
+		  ViewSize = 100
+		  pmViewSize.SelectedRowIndex = 9
+		  Canvas1.Refresh()
+		  App.DoEvents(10)
+		  Dim rs As RGBSurface
+		  rs = pc.RGBSurface
+		  
+		  // Now we need to produce 3 files:
+		  // 1. Black dots
+		  // 2. Dark grey dots
+		  // 3. Light grey dots
+		  // Each file will be displayed once in a loop
+		  // So that for each cycle, black dots are displayed 3 times,
+		  // dark grey dots twice, and light grey dots once.
+		  // The overall effect is, on a B&W screen, of levels of grey.
+		  // Delay between each display might need to be tweaked.
+		  
+		  // 1. Black dots, ie > 192
+		  Dim x, threshold, v As UInt8
+		  Dim lineNum, chunkCount, lineCount As Integer
+		  Dim Line, Stages(), s, t() As String
+		  Dim fi As FolderItem
+		  Dim tos As TextOutputStream
+		  fi = SpecialFolder.Temporary.Child("DRAW.ASM")
+		  If fi.Exists Then fi.Remove()
+		  tos = tos.Create(fi)
+		  tos.Write(kGPH0)
+		  x = fh \ 8 - 1
+		  Stages.Add "B"
+		  Stages.Add "G"
+		  Stages.Add "L"
+		  lineNum = 200
+		  For Each Stage As String in Stages
+		    For lineCount = 0 To x
+		      s = KGPH1.ReplaceBytes("$NUM", Stage+Str(lineCount))
+		      s = s.ReplaceBytes("$WIDTH", Str(fw))
+		      s = s.ReplaceBytes("$POSXY", FormatHexForSharp(lineCount*256))
+		      t = s.SplitBytes(EndOfLine)
+		      For Each s In t
+		        tos.WriteLine Str(lineNum)+" "+s
+		        lineNum = lineNum + 10
+		      Next
+		    Next
+		    'tos.WriteLine Str(lineNum)+" CALL WEHT"
+		    'lineNum = lineNum + 10
+		  Next
+		  t = kGPH2.SplitBytes(EndOfLine)
+		  For Each s in t
+		    tos.WriteLine Str(lineNum) + s
+		    lineNum = lineNum + 10
+		  Next
+		  tos.WriteLine ""
+		  fw = fw - 1
+		  fh = fh - 1
+		  x = (lineNum \ 1000) + 1
+		  lineNum = x * 1000
+		  threshold = 192
+		  For Each Stage As String in Stages
+		    lineCount = 0
+		    For h = 0 To fh Step 8
+		      Line = Str(lineNum)+"L"+Stage+Str(lineCount)+": DB "
+		      lineCount = lineCount+ 1
+		      chunkCount = 0
+		      For w = 0 To fw
+		        x = 0
+		        v = 128
+		        For n = 0 To 7
+		          // 0 on the Sharp is white, whereas it's 255 in the image
+		          // So we reverse the value
+		          If (255 - rs.Pixel(w, h+7-n).Red) > threshold Then x = x + v
+		          v = v \ 2
+		        Next
+		        Line = Line + FormatHexForSharp(x)
+		        chunkCount = chunkCount + 1
+		        If chunkCount = 8 Then
+		          // Flush Line
+		          tos.WriteLine Line
+		          // Then
+		          lineNum = lineNum + 10
+		          Line = Str(lineNum)+" DB "
+		          chunkCount = 0
+		        Else
+		          Line = Line + ", "
+		        End If
+		      Next
+		      If Line.RightBytes(2) = ", " Then
+		        Line = Line.LeftBytes(Line.Length-2)
+		      End If
+		      If Line.RightBytes(1) = "H" Then
+		        tos.WriteLine Line
+		      End If
+		      lineNum = lineNum + 10
+		    Next
+		    threshold = threshold - 64
+		  Next
+		  TOS.Write Chr(26)
+		  tos.Close()
+		  tos = Nil
+		  fi.Open()
+		  
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
 		Function Tools4Greys() As Boolean Handles Tools4Greys.Action
 		  Dim p As Picture
 		  p = Canvas1.OrigPicture
@@ -261,6 +399,17 @@ End
 
 	#tag MenuHandler
 		Function ToolsAddText() As Boolean Handles ToolsAddText.Action
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function ToolsDecreaseBrightness() As Boolean Handles ToolsDecreaseBrightness.Action
+		  Dim p As Picture = Canvas1.OrigPicture
+		  p.Brightness(-10)
+		  Canvas1.Backdrop = ReformatPicture(p)
 		  
 		  Return True
 		  
@@ -292,6 +441,17 @@ End
 		  p.Hmirror()
 		  t1 = System.Microseconds - t0
 		  LogStatus Format(t1, "###,###")+" µs"
+		  Canvas1.Backdrop = ReformatPicture(p)
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function ToolsIncreaseBrightness() As Boolean Handles ToolsIncreaseBrightness.Action
+		  Dim p As Picture = Canvas1.OrigPicture
+		  p.Brightness(10)
 		  Canvas1.Backdrop = ReformatPicture(p)
 		  
 		  Return True
@@ -405,6 +565,17 @@ End
 
 
 	#tag Method, Flags = &h0
+		Function FormatHexForSharp(x As Integer) As String
+		  Dim s As String
+		  
+		  If x > 159 Then s = s + "0"
+		  If x < 16 Then s = s + "0"
+		  Return s + Hex(x) + "H"
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub LogStatus(status As String)
 		  lbStatus.Text = status
 		  statusTimer.RunMode = Timer.RunModes.Single
@@ -506,6 +677,16 @@ End
 	#tag Property, Flags = &h0
 		ViewSize As Integer = 100
 	#tag EndProperty
+
+
+	#tag Constant, Name = kGPH0, Type = String, Dynamic = False, Default = \"10 ORG 100H\n20 JP DSPIMG\n30GPF EQU 0BFD0H\n40WAITK EQU 0BFCDH\n50RPTCHR EQU 0BFEEH\n\n60CLS: LD B\x2C 144\n70 LD DE\x2C 0\n80CLS0: LD A\x2C 32\n90 CALL RPTCHR\n100 RET\n\n110DSPIMG: CALL CLS\n120 LD A\x2C200\n130DSP00: PUSH AF\n", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = kGPH1, Type = String, Dynamic = False, Default = \"LD HL\x2C L$NUM\nLD B\x2C $WIDTH\nLD DE\x2C $POSXY\nCALL GPF", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = kGPH2, Type = String, Dynamic = False, Default = \" POP AF\n DEC A\n JP NZ\x2C DSP00\n RET\nTHEEND: POP AF\n RET", Scope = Public
+	#tag EndConstant
 
 
 #tag EndWindowCode
